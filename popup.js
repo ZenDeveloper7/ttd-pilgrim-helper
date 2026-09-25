@@ -3,6 +3,8 @@
 
   const api = globalThis.chrome || globalThis.browser;
   const STORAGE_KEY = "ttdPilgrimHelperV1";
+  const PLAN_KEY = "ttdBookingPlanV1";
+  const DEFAULT_BOOKING_URL = "https://ttdevasthanams.ap.gov.in/arjitha-seva/slot-booking?flowIdentifier=arjitha-seva&templeName=Srivari%20Temple%20-%20Tirumala";
   const FIELDS = [
     ["name", "Full name", "text", true],
     ["age", "Age", "number"],
@@ -39,6 +41,38 @@
   function status(message, error = false) {
     el("status").textContent = message;
     el("status").classList.toggle("error", error);
+  }
+
+  function planStatus(message, error = false) {
+    el("planStatus").textContent = message;
+    el("planStatus").classList.toggle("error", error);
+  }
+
+  function backgroundMessage(message) {
+    return new Promise((resolve, reject) => api.runtime.sendMessage(message, (response) => {
+      const error = api.runtime.lastError;
+      error ? reject(new Error(error.message)) : resolve(response);
+    }));
+  }
+
+  function showPlan(plan) {
+    if (!plan) { planStatus("No booking armed."); return; }
+    el("sevaMode").value = plan.sevaMode || "any";
+    el("sevaName").value = plan.seva || "";
+    el("sevaNameLabel").hidden = el("sevaMode").value !== "exact";
+    el("bookingDate").value = plan.bookingDate || "";
+    el("releaseIst").value = plan.releaseIst || "";
+    el("bookingUrl").value = plan.bookingUrl || DEFAULT_BOOKING_URL;
+    const opened = plan.openedAt ? ` Opened at ${new Date(plan.openedAt).toLocaleString()}.` : "";
+    planStatus(`${plan.status}: ${plan.message || "Waiting for the release time."}${opened}`, ["stopped", "missed"].includes(plan.status));
+  }
+
+  async function loadPlan() {
+    const saved = await new Promise((resolve, reject) => api.storage.local.get(PLAN_KEY, (result) => {
+      const error = api.runtime.lastError;
+      error ? reject(new Error(error.message)) : resolve(result[PLAN_KEY]);
+    }));
+    showPlan(saved);
   }
 
   function selected() {
@@ -221,6 +255,29 @@
   }
 
   function bind() {
+    el("sevaMode").addEventListener("change", () => { el("sevaNameLabel").hidden = el("sevaMode").value !== "exact"; });
+    el("armPlan").addEventListener("click", async () => {
+      try {
+        await saveNow();
+        const response = await backgroundMessage({ type: "PLAN_SAVE", plan: {
+          sevaMode: el("sevaMode").value,
+          seva: el("sevaName").value,
+          bookingDate: el("bookingDate").value,
+          releaseIst: el("releaseIst").value,
+          bookingUrl: el("bookingUrl").value,
+          listId: selected().id
+        } });
+        if (!response?.ok) throw new Error(response?.error || "Could not arm the booking.");
+        showPlan(response.plan);
+      } catch (error) { planStatus(error.message, true); }
+    });
+    el("cancelPlan").addEventListener("click", async () => {
+      try {
+        const response = await backgroundMessage({ type: "PLAN_CANCEL" });
+        if (!response?.ok) throw new Error(response?.error || "Could not cancel the booking.");
+        showPlan(response.plan);
+      } catch (error) { planStatus(error.message, true); }
+    });
     el("listSelect").addEventListener("change", (event) => { data.selectedId = event.target.value; render(); scheduleSave(); });
     el("newList").addEventListener("click", () => {
       const name = prompt("Name for the new list:", "New list");
@@ -272,5 +329,7 @@
   }
 
   bind();
+  el("bookingUrl").value = DEFAULT_BOOKING_URL;
+  loadPlan().catch((error) => planStatus(error.message, true));
   storageGet().then((saved) => { if (saved) data = validateData(saved); render(); }).catch((error) => status(error.message, true));
 })();

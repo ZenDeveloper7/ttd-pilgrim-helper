@@ -13,7 +13,7 @@
     "default_popup": "popup.html"
   },
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["plan.js", "background.js"]
   },
   "content_scripts": [{
     "matches": [
@@ -22,5 +22,11 @@
     ],
     "js": ["content.js"],
     "run_at": "document_idle"
-  }]
+  }],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ttd-pilgrim-helper@local",
+      "strict_min_version": "109.0"
+    }
+  }
 }

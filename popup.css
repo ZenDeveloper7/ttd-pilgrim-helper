@@ -37,6 +37,13 @@ h2 { font-size: 14px; margin: 0; }
 .field.wide { grid-column: 1 / -1; }
 .empty { padding: 20px; text-align: center; border: 1px dashed #bdcccf; border-radius: 7px; color: #65757a; font-size: 12px; }
 .tool-section { padding: 11px; border: 1px solid #bed8d5; border-radius: 8px; background: #ecf5f2; }
+.plan-section { padding: 11px; border: 1px solid #bed8d5; border-radius: 8px; background: #f0f7f5; }
+.plan-section h2 { margin-bottom: 5px; }
+.plan-fields { display: grid; gap: 8px; margin-top: 12px; }
+.plan-fields label { display: grid; gap: 4px; }
+.plan-fields label[hidden] { display: none; }
+.plan-fields input[readonly] { background: #e9efee; }
+.plan-actions { margin-top: 10px; }
 .actions button { flex: 1; }
 .secondary-actions { margin-top: 7px; }
 .secondary-actions button { font-size: 11px; }

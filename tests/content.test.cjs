@@ -19,7 +19,7 @@ const fields = [new Input('Name'), new Input('Age'), new Select('Gender', ['Male
 const actions = ['Continue', 'Pay Now'].map(text => ({textContent:text, disabled:false, getAttribute:()=>null, getClientRects:()=>[1], click(){this.clicked=true;}}));
 const document = { querySelectorAll(selector) { return selector.startsWith('input:not') ? fields : selector.startsWith('button') ? actions : []; }, documentElement: {} };
 let listener;
-const context = { chrome:{runtime:{onMessage:{addListener(fn){listener=fn;}}}}, document, HTMLInputElement:Input, HTMLSelectElement:Select, HTMLTextAreaElement:Textarea, getComputedStyle:()=>({display:'block',visibility:'visible'}), Event:class{}, MutationObserver:class{observe(){} disconnect(){}}, setTimeout, clearTimeout };
+const context = { chrome:{runtime:{onMessage:{addListener(fn){listener=fn;}},sendMessage(_message, callback){callback?.();}}}, document, HTMLInputElement:Input, HTMLSelectElement:Select, HTMLTextAreaElement:Textarea, getComputedStyle:()=>({display:'block',visibility:'visible'}), Event:class{}, MutationObserver:class{observe(){} disconnect(){}}, setTimeout, clearTimeout };
 vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'content.js'),'utf8'), context);
 const send = message => new Promise(resolve => listener(message, {}, resolve));
 (async()=>{

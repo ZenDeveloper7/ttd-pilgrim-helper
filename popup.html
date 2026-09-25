@@ -34,6 +34,25 @@
       <div id="people" class="people"></div>
     </section>
 
+    <section class="plan-section" aria-labelledby="planTitle">
+      <h2 id="planTitle">Scheduled booking</h2>
+      <p class="hint">Keep the browser open and signed in to TTD near the release time. The extension stops at payment.</p>
+      <div class="plan-fields">
+        <label>Temple<input value="Srivari Temple - Tirumala" readonly></label>
+        <label>Seva<select id="sevaMode"><option value="any">Any available seva</option><option value="exact">Specific seva</option></select></label>
+        <label id="sevaNameLabel" hidden>Seva name<input id="sevaName" type="text" autocomplete="off"></label>
+        <label>Visit date<input id="bookingDate" type="date"></label>
+        <label>Ticket release date and time (IST)<input id="releaseIst" type="datetime-local" step="1"></label>
+        <label>Booking URL<input id="bookingUrl" type="url" spellcheck="false"></label>
+      </div>
+      <p class="hint">Uses the current pilgrim list when armed. Availability, login, CAPTCHA, and TTD validation can stop the run.</p>
+      <div class="actions plan-actions">
+        <button id="armPlan" class="primary" type="button">Arm booking</button>
+        <button id="cancelPlan" type="button">Cancel plan</button>
+      </div>
+      <output id="planStatus" role="status" aria-live="polite"></output>
+    </section>
+
     <section class="tool-section" aria-label="Form actions">
       <div class="actions">
         <button id="checkForm" type="button">Check form</button>
