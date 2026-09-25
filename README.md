@@ -30,4 +30,4 @@ Reload already-open TTD tabs after installation. Chrome and Zen have separate ex
 
 The extension uses only browser-local storage and TTD pages; it has no remote server, analytics, or extension account. Stored pilgrim details are not separately encrypted. It is not affiliated with Tirumala Tirupati Devasthanams.
 
-Run `node tests/plan.test.cjs`, `node tests/content.test.cjs`, and `node tests/background.test.cjs` for synthetic checks. These do not prove that today's authenticated TTD site matches the selectors or that a browser alarm will fire at the exact second.
+Run `node tests/plan.test.cjs`, `node tests/content.test.cjs`, `node tests/background.test.cjs`, and `node tests/scheduled-content.test.cjs` for synthetic checks. These do not prove that today's authenticated TTD site matches the selectors or that a browser alarm will fire at the exact second.
