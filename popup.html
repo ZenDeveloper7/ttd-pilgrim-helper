@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TTD Pilgrim Helper</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">BOOKING ASSISTANT</div>
+      <h1>Pilgrim lists</h1>
+      <p>Choose a list, check the form, then fill it.</p>
+    </header>
+
+    <section class="list-section" aria-label="Lists">
+      <div class="list-picker">
+        <label for="listSelect">Current list</label>
+        <select id="listSelect"></select>
+      </div>
+      <div class="list-actions">
+        <button id="newList" type="button">New list</button>
+        <button id="renameList" type="button">Rename</button>
+        <button id="deleteList" type="button" class="quiet-danger">Delete</button>
+      </div>
+    </section>
+
+    <section class="people-section" aria-labelledby="peopleTitle">
+      <div class="section-heading">
+        <h2 id="peopleTitle">Pilgrims</h2>
+        <button id="addPerson" type="button">+ Add</button>
+      </div>
+      <div id="people" class="people"></div>
+    </section>
+
+    <section class="tool-section" aria-label="Form actions">
+      <div class="actions">
+        <button id="checkForm" type="button">Check form</button>
+        <button id="fillForm" type="button" class="primary">Fill form</button>
+      </div>
+      <div class="actions secondary-actions">
+        <button id="continueForm" type="button">Continue</button>
+        <button id="payNow" type="button">Pay Now</button>
+        <button id="runAll" type="button">Run All</button>
+      </div>
+      <p class="hint">Run All fills the form and clicks the site's Continue and Pay Now buttons. Review the booking before using it.</p>
+      <output id="status" role="status" aria-live="polite"></output>
+    </section>
+
+    <footer>
+      <button id="save" type="button">Save changes</button>
+      <button id="export" type="button">Export</button>
+      <button id="import" type="button">Import</button>
+      <input id="importFile" type="file" accept="application/json,.json" hidden>
+    </footer>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

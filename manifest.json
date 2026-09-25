@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "TTD Pilgrim Helper",
+  "version": "0.1.0",
+  "description": "Save pilgrim lists locally and fill TTD booking forms on demand.",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": [
+    "https://*.ttdevasthanams.ap.gov.in/*",
+    "https://*.ttdsevaonline.com/*"
+  ],
+  "action": {
+    "default_title": "Open TTD Pilgrim Helper",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [{
+    "matches": [
+      "https://*.ttdevasthanams.ap.gov.in/*",
+      "https://*.ttdsevaonline.com/*"
+    ],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ttd-pilgrim-helper@local",
+      "strict_min_version": "109.0"
+    }
+  }
+}
